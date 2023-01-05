@@ -2,32 +2,32 @@
 @import url('https://fonts.googleapis.com/css?family=Dancing+Script&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
 
-* {
+/* {
 	box-sizing: border-box;
-	margin: 0;
-	padding: 0;
-}
+	margin: 5px;;
+	padding: 2px;;
+}*/
 html {
 	scroll-behavior: smooth;
 }
 body {
-	background: rgb(20, 110, 117);
+	background: rgb(20 159 142);;
 	font-family: 'Open Sans', sans-serif;
 }
 
 /*SCROLLBAR Styling*/
 ::-webkit-scrollbar {
-  width: 5px;
+  width:10px;
 }
 ::-webkit-scrollbar-thumb {
-  background: #FA4B37;
-  border-radius: 5px;
+  background: #0a6d6a;
+  border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #DF2771; 
 }
 
-/*NAVIGATION BAR*/
+/*NAVIGATION BAR
 .nav
 {
 	width: 100%;
@@ -41,7 +41,7 @@ body {
 	top: 0px;
 	z-index: 10;
 	box-shadow: 1px 1px 10px rgba(11, 135, 189, 0.5);
-}
+}*/
 
 .nav li, a, button
 {
@@ -138,10 +138,24 @@ body {
 	margin-left: 100px;
 }
 .title span{
-	font-weight: 700;
+	font-weight: 200;
 	font-family: 'Open Sans', sans-serif;
-	font-size: 60px;
-	color: #8b1960;
+	font-size: 20px;
+	color: #b94040;;
+}
+.title h4 {
+	font-weight: 200;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 20px;
+	color: #f1e90c;;
+
+}
+.title h3 {
+	font-weight: 200;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 20px;
+	color: #000000;;
+
 }
 .title .shortdesc {
 	padding: 10px;
@@ -150,6 +164,7 @@ body {
 	color: #f1f1f1;
 	margin-bottom: 50px;
 }
+
 
 /*Quick Links*/
 .course {
@@ -470,7 +485,7 @@ footer .txtb {
 	flex: 1;
 	padding: 18px 40px;
 	font-size: 16px;
-	background: #175fa8;
+	background: #e1074c;
 	border: none;
 	font-weight: 700;
 	outline: none;
@@ -511,11 +526,11 @@ footer .btn:hover {
 	}
 	.left-col {
 		width: 100%;
-		text-align: center;
+		text-align: left;
 	}
 	.social-media {
 		display: flex;
-		justify-content: center;
+		justify-content: left;
 	}
 }
 
