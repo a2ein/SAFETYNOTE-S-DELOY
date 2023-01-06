@@ -1,0 +1,82 @@
+body {
+	background: rgb(240, 237, 238);
+	font-family: 'Open Sans', sans-serif;
+}
+header{
+
+    
+}
+h5 {
+
+    text-align: center;
+    color: #0898c7cb;
+}
+
+.sw {
+    
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	/*background-image: linear-gradient(rgba(118, 7, 7, 0),rgba(6, 120, 57, 0.7)),url("images/extra/b3.jpg");
+	*/background-size: cover;
+	background-attachment: fixed;
+}
+.sw .m-card img {
+	width: 100px;
+}
+.sw a {
+	padding: 0;
+	margin: 40px 10px;
+}
+.sw .m-card {
+	display: flex;
+	justify-content: space-around;
+	padding: 10px;
+	align-items: center;
+	text-align: center;
+	width: 200px;
+	height: 100px;
+	box-shadow: inset 0 0 20px rgba(255,255,255,0.05),
+					0 0 50px rgba(0,0,0,0.8);
+	border-radius: 5px;
+	cursor: pointer;
+	transition-duration: .5s;
+}
+.sw .m-card p {
+	color: #fd3d7a;
+    text-align: center;
+	font-size: 1.2em;
+	font-family: 'Open Sans',sans-serif;
+}
+.sw .m-card:hover {
+	box-shadow: 0 0 50px rgba(102, 234, 223, 0.8);
+	transform: translateY(-10px);
+}
+h2 {color: rgb(245, 6, 102);
+text-align: center;
+}
+h3 {color: rgb(77, 30, 178);
+text-align: center;}
+#about_section, #portfolio_section, #team_section, #services_section, #contactus_section , #sec-m ,  {
+	font-family: 'Open Sans', sans-serif;
+	color: #e10909;
+	position: center;
+    
+}
+.diffSec {
+	width: 100%;
+	position: center;
+	justify-content: center;
+	align-items: center;
+}
+.diffSec  {
+	margin: 0px;
+	text-align: center;
+	padding: 0px 00px;
+	font-size: 1.1em;
+}
+h1 {text-align: center;
+color: rgba(15, 188, 182, 0.756);}
+
+p {text-align: center;}

@@ -227,7 +227,7 @@ a, button {
 	opacity: 1;
 }
 /*Common things in all sections*/
-#about_section, #portfolio_section, #team_section, #services_section, #contactus_section {
+#about_section, #portfolio_section, #team_section, #services_section, #contactus_section , #sec-m ,{
 	font-family: 'Open Sans', sans-serif;
 	color: #e10909;
 	position: relative;
