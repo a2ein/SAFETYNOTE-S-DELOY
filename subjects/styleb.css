@@ -1,26 +1,25 @@
 .Blood1  {
+    display: contents;
     color: rgb(255, 222, 179);
     
-	display:flex ;
-	flex-wrap: wrap;
-	justify-content: center;
 	align-items: center;
+	justify-content: center;
 }
 .Blood1 .b-c{
 
     color: #000;
     text-align: center;
     text-decoration: none;
-    display: flex;
+    display: ;
 	justify-content: space-around;
 	padding: 10px;
 	align-items: center;
-	text-align: center;
-	width: 400px;
-	height: 120px;
+	
+	width: 250px;
+	height: 270px;
 	box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.884),
 					0 0 50px rgb(36, 32, 32);
-	border-radius: 5px;
+	border-radius: 60px;
 	cursor: pointer;
 	transition-duration: .5s;
 } 
@@ -46,11 +45,7 @@ width: 50px;
     box-shadow: 0 0 50px rgba(255, 255, 255, 0.8);
 
 }
-.Blood1 .b-c a{
-    text-align: justify;
-    text-decoration: none;
-    text-size-adjust: 1.5px;
-}
+
 h5{
 
     text-align: center;
@@ -62,8 +57,3 @@ h3{
     color: rgba(253, 2, 86, 0.758);
     text-align: center;
 }
-.Blood1 a {
-    text-align: center;
-        padding: ;
-        margin: px 0px;
-    }
