@@ -1,7 +1,7 @@
 .Blood1  {
     color: rgb(255, 222, 179);
     
-	display: ;
+	display:lex ;
 	flex-wrap: wrap;
 	justify-content: center;
 	align-items: center;
@@ -13,10 +13,10 @@
     text-decoration: none;
     display: flex;
 	justify-content: space-around;
-	padding: 0px;
+	padding: 10px;
 	align-items: center;
 	text-align: center;
-	width: 350px;
+	width: 400px;
 	height: 120px;
 	box-shadow: inset 0 0 20px rgba(255,255,255,0.05),
 					0 0 50px rgba(0,0,0,0.8);
@@ -32,8 +32,8 @@ width: 50px;
 .Blood1 .b-c p{
 	color: #fd3d7a;
     text-align: center;
-    justify-self: ;
-	font-size: 1em;
+    justify-self: justify;
+	font-size: 1rem;
 	font-family: 'Open Sans',sans-serif;
     text-decoration-line: none;
 
@@ -64,8 +64,6 @@ h3{
 }
 .Blood1 a {
     text-align: center;
-    .sw a {
-        padding: 10;
-        margin: 40px 10px;
+        padding: ;
+        margin: px 0px;
     }
-}
