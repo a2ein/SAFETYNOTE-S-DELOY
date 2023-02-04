@@ -1,5 +1,5 @@
 body {
-	background: rgb(212, 45, 101);
+	background: rgba(192, 30, 79, 0.537);;
 	font-family: 'Open Sans', sans-serif;
 }
 header{
@@ -38,7 +38,7 @@ h5 {
 	width: 300px;
 	height: 120px;
 	box-shadow: inset 0 0 20px rgb(230, 247, 250),
-					0 0 50px rgb(237, 7, 76);
+					0 0 50px rgb(104 2 2 / 38%);;
 	border-radius: 60px;
 	cursor: pointer;
 	transition-duration: .5s;
