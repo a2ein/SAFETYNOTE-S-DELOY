@@ -30,12 +30,36 @@
 <body>
 
 
-
 <!-- SERVICES -->
+
 	<div class="service-swipe">
 		<div class="diffSection" id="services_section">
 		<center><p style="font-size: 50px; padding: 100px; padding-bottom: 40px; color: rgb(232, 14, 32);">SAFETY NOTE'S</p></center>
 		</div>
+		
+
+<!--count_api-->
+
+
+
+<tr>VISITED By</tr>
+<h2 id="count" >...</h2>
+<p>people</p>
+
+<script>
+  const countEl = document.getElementById("count");
+  countvisits();
+
+  function countvisits() {
+	fetch('https://api.countapi.xyz/update/click?amount=1')
+	  .then((res) => res.json())
+	  .then((res) => {
+		countEl.innerHTML = res.value;
+	  });
+  }
+</script>
+
+<!--count_api-->
 		<a href="subjects/p1.html"><div class="s-card"><img src="flame.png.png"><p>বিভিন্ন ধরনের অগ্নি নিয়ন্ত্রনে করনীয়</p></div></a>
 		<a href="subjects/p2.html"><div class="s-card"><img src="what.png.png"><p>অগ্নী দুর্ঘটনার সময় যা যা করনীয়</p></div></a>
 		<a href="https://my.ivideon.com/cameras/groups/own"><div class="s-card"><img src="image-removebg-preview (4).png"><p>আইপি মনিটর</p></div></a>
