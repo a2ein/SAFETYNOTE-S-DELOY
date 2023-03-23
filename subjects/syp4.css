@@ -1,5 +1,5 @@
 body {
-	background: rgba(192, 30, 79, 0.537);;
+	background: rgba(248, 248, 248, 0.537);;
 	font-family: 'Open Sans', sans-serif;
 }
 header{
@@ -7,9 +7,9 @@ header{
     
 }
 h5 {
-
+font-size: large;
     text-align: center;
-    color: #ffffffcb;
+    color: #ff1010cb;
 }
 
 .sw {

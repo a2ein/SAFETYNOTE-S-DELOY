@@ -1,12 +1,10 @@
 .Bloodmain  {
-    display: flex;
-	flex-wrap: wrap;
-	justify-content: space-evenly;
-	align-items: center;
-	background-image: rgba(255, 252, 252, 0.975);
-	
 
-	
+   display: flex;
+  flex-direction: column;
+  
+   background-image: rgba(218, 10, 10, 0.975);
+   
 }
 .Bloodmain .b-c{
 
@@ -16,12 +14,12 @@
    
 	padding: 20px;
 	
-	
+	background-color: #ffffff6b;
 	width: 250px;
 	height: 270px;
-	box-shadow: inset 0 0 10px rgb(2, 220, 50),
-					0 0 20px rgb(0, 236, 216);
-	border-radius: 600px;
+	box-shadow: inset 6px 10px 30px rgb(15, 240, 71),
+					8px 30px 100px rgb(1, 255, 22);
+	border-radius: 1000px;
 	cursor: pointer;
 	transition-duration: .5s;
 
@@ -65,15 +63,16 @@ h3{
 }
 a{
     text-decoration: none;
+
 }
 #about_section, #portfolio_section, #team_section, #services_section, #contactus_section , #sec-m ,#bloodsec  {
 	font-family: 'Open Sans', sans-serif;
-	color: #e10909;
+	color: #e1092d;
 	position: center;
     align-items: center;
 }
 p
 {
     
-    color: #e10909;
+    color: #d80101b7;
     text-align: center;}
