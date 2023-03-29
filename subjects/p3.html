@@ -25,4 +25,24 @@
        <a href="subjects/c.html"><div class="card"><img src=""><p></p></div></a>
     </div>
        </body>
-       <p>Researched by MST URMI KHATUN</p>
+       <!--count_api-->
+
+
+<div class="top-elementa">PEOPLE VISITED THIS WEBSITE </div>
+<h2 style="color: rgb(2, 48, 255);text-align:center"  id="count" >...</h2>
+<div class="down-ele">TIMES </div>
+
+<script>
+  const countEl = document.getElementById("count");
+  countvisits();
+
+  function countvisits() {
+	fetch('https://api.countapi.xyz/update/click?amount=1')
+	  .then((res) => res.json())
+	  .then((res) => {
+		countEl.innerHTML = res.value;
+	  });
+  }
+</script>
+
+<!--count_api-->
