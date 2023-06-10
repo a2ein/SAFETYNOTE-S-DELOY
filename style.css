@@ -7,8 +7,34 @@
 	margin: 0;
 	padding: 0;
 }
+.downad{	
+	display: grid;
+	row-gap: 50px;
+justify-content: space-around;
+align-items: center;
+text-align: center;
+
+}
+#sm{
 
 
+	
+}
+
+#ld{
+	column-gap: 10px;
+
+}
+.adi{
+
+	height: 80px;
+	width: 100px;
+	
+}
+.d{
+	color: #17a166;
+	font-size: .5px;
+}
 /*count_api*/
 
 .count{
@@ -321,6 +347,7 @@ footer .footer-container {
 	flex-wrap: wrap-reverse;
 }
 footer .social-media img{
+	align-items: center;
 	width: 22px;
 }
 footer .logo {
@@ -336,6 +363,7 @@ footer .social-media a{
 	margin-right: 10px;
 	font-size: 22px;
 	text-decoration: none;
+	justify-content: center;
 }
 footer .right-col h1{
 	font-size: 26px;
