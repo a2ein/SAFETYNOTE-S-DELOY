@@ -27,8 +27,8 @@ text-align: center;
 }
 .adi{
 
-	height: 80px;
-	width: 100px;
+	height: 60px;
+	width: 80px;
 	
 }
 .d{
@@ -252,9 +252,9 @@ a, button {
 	opacity: 1;
 }
 /*Common things in all sections*/
-#ads_section,#about_section, #portfolio_section, #team_section, #services_section, #contactus_section , #sec-m ,{
+ #services_section, #contactus_section , #sec-m {
 	font-family: 'Open Sans', sans-serif;
-	color: #e10909;
+	color: #000000;
 	position: relative;
 }
 .diffSection {
