@@ -63,7 +63,17 @@ color: #00fabb;
 .XNo5Ab.XNo5Ab {
     display: block;
 }
+footer .social #social{
+    display: flex;
+    flex-wrap: wrap;
+    -ms-flex-item-align: center;
 
+  background-color: rgb(4, 37, 66);
+
+  height: 15.5; 
+  width: 16;
+}
+ 
 
 /*ads*/
 .iframe-wrapper {
@@ -338,6 +348,8 @@ footer {
 	color: #4f4f4e;
 	background: rgba(20, 4, 15, 0.867);
 	padding: 50px 0; 
+	display: flex;
+	-ms-flex-align: center;
 }
 footer .footer-container {
 	max-width: 1300px;
@@ -348,24 +360,13 @@ footer .footer-container {
 	align-items: center;
 	flex-wrap: wrap-reverse;
 }
-footer .social-media img{
-	align-items: center;
-	width: 22px;
-}
-footer .logo {
-	width: 180px;
-	color: rgb(214, 7, 7);
-	align-items: center;
 
+footer .social #social{
 
+flex-direction: column;
+	display: flex;
+	-ms-flex-align: center;
 
-	
-}
-footer .social-media a{
-	margin-right: 10px;
-	font-size: 22px;
-	text-decoration: none;
-	justify-content: center;
 }
 footer .right-col h1{
 	font-size: 26px;
@@ -376,28 +377,11 @@ footer .border{
 	background: linear-gradient(to right, #ebf5f3, #089888);
 	margin: 2px;
 }
-footer .newsletter-form {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-wrap: wrap;
-}
+
 footer input::placeholder {
   color: rgb(237, 11, 11) !important;
 }
-footer .txtb {
-	flex: 1;
-	padding: 18px 40px;
-	font-size: 16px;
-	background: #0f989b;
-	border: none;
-	font-weight: 700;
-	outline: none;
-	border-radius: 5px;
-	min-width: 260px;
-	margin-top: 20px;
-	color: rgb(214, 7, 7);
-}
+
 footer .btn {
 	margin-top: 20px;
 	padding: 18px 40px;
@@ -429,7 +413,7 @@ footer .btn:hover {
 		width: 100%;
 		text-align: center;
 	}
-	.social-media {
+	.social {
 		display: flex;
 		justify-content: center;
 	}
@@ -470,11 +454,7 @@ footer .btn:hover {
 		width: 100%;
 		margin-top: 20px;
 	}
-	.svg-image img {
-		width: 90%;
-		margin: 20px;
-		/* align-self: center; */
-	}
+
 }
 
 @media screen and (max-width: 1000px) {	
