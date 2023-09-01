@@ -239,9 +239,7 @@ a, button {
 	
 }
 .service-swipe .s-card {
-	background-image:   url("images/background/R.gif");
-	background-repeat: ;
-	
+background-color: #ebf5f3b4;
 	display: flex;
 	justify-content: space-around;
 	padding: 10px;
