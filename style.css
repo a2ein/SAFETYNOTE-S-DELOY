@@ -7,18 +7,18 @@
 	margin: 0;
 	padding: 0;
 }
+.field{
+
+	background-image: url("images/background/r2.jpg");
+}
 .downad{	
 	display: grid;
 	row-gap: 50px;
+	background-image: linear-gradient(rgba(255,255,255,.6),rgba(255,255,255,.6)) , url("images/background/r2.jpg");
 justify-content: space-around;
 align-items: center;
 text-align: center;
 
-}
-#sm{
-
-
-	
 }
 
 #ld{
@@ -60,9 +60,7 @@ color: #00fabb;
 }
 /*___*/
 
-.XNo5Ab.XNo5Ab {
-    display: block;
-}
+
 footer .social #social{
     display: flex;
     flex-wrap: wrap;
@@ -97,7 +95,7 @@ html {
 	scroll-behavior: smooth;
 }
 body {
-	background: rgb(10, 145, 123);
+	font-weight: bold;
 	font-family: 'Open Sans', sans-serif;
 }
 
@@ -106,7 +104,7 @@ header {
 	/* background="viktor-forgacs-aPC8ygu3bWA-unsplash.jpg" */
 }
 .black {
-	box-shadow: 0 2px 10px rgba(211, 12, 52, 0.5);
+	box-shadow: 0 2px 10px rgba(102, 101, 101, 0.377);
 }
 nav {
 	padding-top: 20px;
@@ -187,82 +185,8 @@ a, button {
 	justify-content: space-around;
 }
 
-.svg-image img{
-	width: 500px;
-	filter: drop-shadow(0 20px 10px rgba(0,0,0,0.2));
-}
 
-/* SIDE MENU */
-.menu {
-	cursor: pointer;
-	width: 25px;
-	display: none;
-}
-.side-menu {
-	width: 100%;
-	height: 100%;
-	background: rgba(15, 27, 133, 0.993);
-	position: absolute;
-	top: 0;
-	transition: .8s;
-	z-index: 2000;
-	transform: translateX(-100%);
-}
-.side-menu ul {
-	margin-top: 35%;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	/* background: #FA4B37; */
-}
-.side-menu ul li {
-	list-style: none;
-	/* background: #009900; */
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	/* border-bottom: 1px solid #fff; */
-	/* padding: 10px 0px; */
-}
-.side-menu ul li:hover a{
-	background: #fff;
-	color: #095a8d;
-}
-.side-menu ul li a{
-	color: #FFF;
-	width: 100%;
-	font-size: 1em;
-	/* background: #2E3D49; */
-	text-decoration: none;
-	padding: 15px 0px;
-}
-.close img{
-	float: right;
-	width: 35px;
-	cursor: pointer;
-	margin: 10px;
-}
-.user {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	margin-top: 10%;
-}
-.user img {
-	width: 60px;
-	border-radius: 50%;
-	border: 2px solid #fff;
-	filter: drop-shadow(0 10px 20px rgba(100, 1, 1, 0.267));
-	margin-right: 30px;
-	cursor: pointer;
-}
-.user p {
-	color: rgb(255, 255, 255);
-	cursor: pointer;
-}
-.user img, .user p {
-	opacity: 1;
-}
+
 /*Common things in all sections*/
  #services_section, #contactus_section , #sec-m {
 	font-family: 'Open Sans', sans-serif;
@@ -289,7 +213,7 @@ a, button {
 	font-family: 'Open Sans', sans-serif;
 	font-size: 30px;
 	text-align: center;
-	color: #2E3D49;
+
 }
 
 /*Service Section*/
@@ -299,8 +223,11 @@ a, button {
 	flex-wrap: wrap;
 	justify-content: center;
 	align-items: center;
-	background-image: linear-gradient(rgba(118, 7, 7, 0),rgba(6, 120, 57, 0.7)),url("images/extra/b3.jpg");
-	background-size: cover;
+	background:  url("images/background/r1.jpeg");
+	background-repeat: ;
+	
+
+	background-size: ;
 	background-attachment: fixed;
 }
 .service-swipe .s-card img {
@@ -309,8 +236,12 @@ a, button {
 .service-swipe a {
 	padding: 0;
 	margin: 40px 10px;
+	
 }
 .service-swipe .s-card {
+	background-image:   url("images/background/R.gif");
+	background-repeat: ;
+	
 	display: flex;
 	justify-content: space-around;
 	padding: 10px;
@@ -318,20 +249,29 @@ a, button {
 	text-align: center;
 	width: 350px;
 	height: 200px;
-	box-shadow: inset 0 0 20px rgba(255,255,255,0.05),
-					0 0 50px rgba(0,0,0,0.8);
+	box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.055),					0 0 50px rgba(240, 239, 239, 0);
 	border-radius: 5px;
 	cursor: pointer;
 	transition-duration: .5s;
+	color: #8d8d8d56;
+	-webkit-border-radius:;
+	-moz-border-radius:;
+	-ms-border-radius:;
+	-o-border-radius:;
 }
 .service-swipe .s-card p {
-	color: #f2f2f2;
-	font-size: 1.2em;
+font-weight: bolder;
+	color: #140000;
+	font-size: 1.5em;
 	font-family: 'Open Sans',sans-serif;
 }
 .service-swipe .s-card:hover {
-	box-shadow: 0 0 50px rgba(102, 234, 223, 0.8);
+	box-shadow: 0 0 50px rgba(116, 115, 115, 0.8);
 	transform: translateY(-10px);
+	-webkit-transform: translateY(-10px);
+	-moz-transform: translateY(-10px);
+	-ms-transform: translateY(-10px);
+	-o-transform: translateY(-10px);
 }
 
 /*SCROLLING TEXT*/
@@ -350,6 +290,7 @@ footer {
 	padding: 50px 0; 
 	display: flex;
 	-ms-flex-align: center;
+	font-size: smaller;
 }
 footer .footer-container {
 	max-width: 1300px;
@@ -378,9 +319,6 @@ footer .border{
 	margin: 2px;
 }
 
-footer input::placeholder {
-  color: rgb(237, 11, 11) !important;
-}
 
 footer .btn {
 	margin-top: 20px;
