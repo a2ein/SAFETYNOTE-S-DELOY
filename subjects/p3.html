@@ -1,35 +1,124 @@
 <!DOCTYPE html>
-<html>
-    <link rel="shortcut icon" type="png" href="dfgfhdh.png">
-    <title>প্রাথমিক চিকিৎসা:</title>
+<html lang="bn">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>প্রাথমিক চিকিৎসা:</title>
+    <link rel="shortcut icon" type="image/png" href="dfgfhdh.png">
     <link rel="stylesheet" type="text/css" href="stylemedi.css">
-    <link rel="shortcut icon" type="png" href="dfgfhdh.png">
-<h2> প্রাথমিক চিকিৎসা: </h2>	
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: url('bg/images.jpg') no-repeat center center fixed;
+            background-size: cover;
+            backdrop-filter: blur(8px);
+            color: #333;
+        }
 
-<h6>ফার্স্ট এইড বা প্রাথমিক চিকিৎসা বলতে জরুরিভাবে কোন আঘাত প্রাপ্ত ব্যক্তি  বা হঠাৎ অসুস্থ ব্যক্তি কে যে সেবা দেওয়া হয় তা বোঝার। অসুস্থ ব্যক্তির জন্য জরুরী সেবা দানই হল ফার্স্ট এইড</h6>
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #00796b;
+            text-align: center;
+            font-size: 36px;
+            font-weight: bold;
+        }
+
+        h6 {
+            color: #004d40;
+            line-height: 1.6;
+            font-size: 18px;
+        }
+
+        .sw {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .m-card, .card {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin: 10px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            width: 200px; /* Adjust width as needed */
+        }
+
+        .m-card img, .card img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
 </head>
-<body background="yello.png">
-    <body>
-        <!--hhhh-->
-            <div class="sw">
-                <div class="diffSec" id="sec-m"></div>
-    
-                <a href="subjects/dog.html"><div class="m-card"><img src=""><p>কুকুরের কামরে প্রাথমিক চিকিৎসা</p></div></a>
-                <a href="subjects/sim.html"><div class="m-card"><img src=""><p>সাধারণ কাটা এর প্রাথমিক চিকিৎসা </p></div></a>
-         
-                <a href="subjects/sap.html"><div class="m-card"><img src=""><p>সাপে কাটার ক্ষেত্রে </p></div></a>
-                
-       <a href="subjects/প.html"><div class="m-card"><img src=""><p>আগুনে পোড়া রোগীর প্রাথমিক চিকিৎসা</p></div></a>
-       <a href="subjects/d.html"><div class="m-card"><img src=""><p>পানিতে ডোবা রোগীর প্রাথিমিক চিকিৎসা </p></div></a>
-       <a href="subjects/c.html"><div class="card"><img src=""><p></p></div></a>
+<body>
+    <div class="overlay"></div>
+    <div class="container">
+        <h2>প্রাথমিক চিকিৎসা:</h2>
+        <h6>প্রাথমিক চিকিৎসা (ফার্স্ট এইড) হলো আহত বা অসুস্থ ব্যক্তিকে প্রাথমিকভাবে সহায়তা করার প্রক্রিয়া।<span 
+            onmouseout="innerHTML='Click me to read again'"  onmouseover="innerHTML=' এটি প্রায়ই জরুরি অবস্থায় প্রয়োগ করা হয় এবং পেশাদার চিকিৎসার আগ পর্যন্ত প্রাথমিক সহায়তা প্রদান করে। প্রাথমিক চিকিৎসার মাধ্যমে প্রাথমিকভাবে অনেক গুরুতর সমস্যার সমাধান করা যায় এবং চিকিৎসা শুরুর আগ পর্যন্ত রোগীকে স্থিতিশীল রাখা যায়।'">See more..</span></h6>
     </div>
-       </body>
-       <!--count_api-->
-
-
-<!--count_api-->
-
-
-
-
+    <div class="sw">
+        <a href="subjects/dog.html">
+            <div class="m-card">
+                <img src="path/to/dog-image.png" alt="">
+                <p>কুকুরের কামরে প্রাথমিক চিকিৎসা</p>
+            </div>
+        </a>
+        <a href="subjects/sim.html">
+            <div class="m-card">
+                <img src="path/to/sim-image.png" alt="">
+                <p>সাধারণ কাটা এর প্রাথমিক চিকিৎসা</p>
+            </div>
+        </a>
+        <a href="subjects/sap.html">
+            <div class="m-card">
+                <img src="path/to/sap-image.png" alt="">
+                <p>সাপে কাটার ক্ষেত্রে</p>
+            </div>
+        </a>
+        <a href="subjects/fire.html">
+            <div class="m-card">
+                <img src="path/to/fire-image.png" alt="">
+                <p>আগুনে পোড়া রোগীর প্রাথমিক চিকিৎসা</p>
+            </div>
+        </a>
+        <a href="subjects/drowning.html">
+            <div class="m-card">
+                <img src="path/to/drowning-image.png" alt="">
+                <p>পানিতে ডোবা রোগীর প্রাথিমিক চিকিৎসা</p>
+            </div>
+        </a>
+        <a href="subjects/seasonal.html">
+            <div class="m-card">
+                <img src="path/to/seasonal-image.png" alt="">
+                <p>Seasonal Facts</p>
+            </div>
+        </a>
+    </div>
+</body>
+</html>
