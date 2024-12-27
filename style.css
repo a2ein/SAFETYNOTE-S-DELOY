@@ -219,31 +219,16 @@ a, button {
 /*Service Section*/
 /*Service Section*/
 .service-swipe {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    background:  url("images/background/R.gif");
-    background-repeat: no-repeat; /* Add your desired repeat setting */
-    background-size: cover; /* Add your desired size setting */
-    background-attachment: fixed;
-    position: relative;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	background:  url("images/background/R.gif");
+	background-size: cover;
+	backdrop-filter: blur(8px);
+	color: #333;
+	background-attachment: fixed;
 }
-
-.service-swipe::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: inherit;
-    background-attachment: fixed;
-    filter: blur(108px);
-    /*Adjusttheblurintensityasneeded*/z-index: -1;
-    -webkit-filter: blur(108px);
-}
-
 .service-swipe .s-card img {
 	width: 100px;
 }
