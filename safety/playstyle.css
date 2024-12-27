@@ -1,0 +1,118 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: url('background.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #fff;
+    overflow: hidden;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 15px;
+    margin: 20px;
+}
+
+.main-video, .video-playlist {
+    margin: 10px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+}
+
+.main-video {
+    flex: 2;
+    min-width: 300px;
+}
+
+.main-video video {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.video-playlist {
+    flex: 1;
+    min-width: 200px;
+}
+
+.video-playlist .videos {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.video-playlist .video {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: transform 0.2s;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.video-playlist .video:hover {
+    transform: scale(1.05);
+}
+
+.video-playlist img {
+    width: 50px;
+    border-radius: 10px;
+}
+
+h3.title, h4 {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #fff;
+}
+
+h3.title {
+    font-size: 24px;
+}
+
+h4 {
+    font-size: 18px;
+}
+
+/* Media Queries for responsiveness */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .main-video, .video-playlist {
+        width: 100%;
+        max-width: 600px;
+    }
+
+    .video-playlist .videos {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .video-playlist .video {
+        flex: 1 1 45%;
+        max-width: 45%;
+        margin: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-video video {
+        height: auto;
+    }
+
+    .video-playlist .video {
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
+}
