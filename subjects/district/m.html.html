@@ -143,6 +143,10 @@
     </div>
     
     <script>
+        // Gemini API Configuration
+        const apiKey = "AIzaSyDVvKCewrXKOWkZ7Nsus7MQ1qrVdUt3GhI"; // API key will be provided by Canvas runtime
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
         // Data for all 64 Districts, including Bengali names and historical highlights, emergency, and transport info.
         const districtsData = [
             { name: "ঢাকা বিভাগ (Dhaka)", bn_name: "ঢাকা বিভাগ", color: "from-emerald-600 to-green-700", districts: [
@@ -290,15 +294,117 @@
             return numberPart.replace(/[^0-9+]/g, ''); 
         }
 
+        // --- Gemini API Function ---
+        async function generateItinerary(districtEn, highlight) {
+            const districtId = districtEn.replace(/\s/g, '-');
+            const outputElement = document.getElementById(`llm-output-${districtId}`);
+            const buttonElement = document.getElementById(`llm-button-${districtId}`);
+
+            if (!outputElement || !buttonElement) return;
+
+            buttonElement.disabled = true;
+            buttonElement.textContent = '...তৈরি হচ্ছে (Generating)';
+            outputElement.innerHTML = `<p class="text-blue-500">আপনার জন্য একটি বিশেষ ভ্রমণ পরিকল্পনা তৈরি করা হচ্ছে, অপেক্ষা করুন...</p>`;
+
+            // System prompt for setting the persona
+            const systemPrompt = "আপনি একজন বন্ধুত্বপূর্ণ ভ্রমণ বিশেষজ্ঞ। আপনার কাজ হল বাংলাদেশের একটি জেলার নাম এবং তার কিছু মূল আকর্ষণ পেয়ে একটি সংক্ষিপ্ত, দ্রুত ভ্রমণপথ (Itinerary) তৈরি করা। ভ্রমণপথটি বাংলাতে লিখুন এবং এটিকে তিনটি সুস্পষ্ট বুলেট পয়েন্টে ভাগ করুন। আপনি শুধু ভ্রমণপথটিই (৩টি বুলেট পয়েন্ট) লিখবেন, কোনো অতিরিক্ত ভূমিকা বা উপসংহার লিখবেন না।";
+            
+            // User query to drive the generation
+            const userQuery = `বাংলাদেশের ${districtEn} জেলার জন্য নিম্নলিখিত ঐতিহাসিক হাইলাইটগুলো ব্যবহার করে একটি সংক্ষিপ্ত ৩-দফা ভ্রমণ পরিকল্পনা দিন: ${highlight}`;
+
+            const payload = {
+                contents: [{ parts: [{ text: userQuery }] }],
+                systemInstruction: { parts: [{ text: systemPrompt }] },
+                tools: [{ "google_search": {} }],
+            };
+
+            const maxRetries = 3;
+            let lastError = null;
+            let finalStatus = 0; // To store the HTTP status if API fails
+
+            for (let attempt = 0; attempt < maxRetries; attempt++) {
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    finalStatus = response.status;
+
+                    if (!response.ok) {
+                        // Throw specific error including status for better handling outside
+                        throw new Error(`API call failed with status ${finalStatus}`);
+                    }
+
+                    const result = await response.json();
+                    const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
+
+                    if (text) {
+                        // Display the generated text
+                        outputElement.innerHTML = `<p class="text-gray-800 whitespace-pre-line">${text}</p>`;
+
+                        // Extract and display grounding sources (optional)
+                        const groundingMetadata = result.candidates?.[0]?.groundingMetadata;
+                        let sourcesHtml = '';
+                        if (groundingMetadata && groundingMetadata.groundingAttributions) {
+                            const sources = groundingMetadata.groundingAttributions
+                                .map(attribution => attribution.web?.title)
+                                .filter(title => title);
+                            if (sources.length > 0) {
+                                sourcesHtml = `<p class="mt-2 text-xs text-gray-400">তথ্যসূত্র: ${sources.slice(0, 2).join(', ')}...</p>`;
+                            }
+                        }
+                        outputElement.innerHTML += sourcesHtml;
+
+                        break; // Success
+                    } else {
+                        throw new Error("Received empty response from LLM.");
+                    }
+                } catch (error) {
+                    lastError = error;
+                    // If the error is 401/403, break early as retrying won't help.
+                    if (finalStatus === 401 || finalStatus === 403) {
+                         break; 
+                    }
+                    console.error(`Attempt ${attempt + 1} failed for ${districtEn}:`, error);
+                    if (attempt < maxRetries - 1) {
+                        const delay = Math.pow(2, attempt) * 1000;
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                    }
+                }
+            }
+
+            // Final cleanup after loop
+            buttonElement.disabled = false;
+            buttonElement.textContent = '✨ ভ্রমণ পরিকল্পনা তৈরি করুন';
+
+            if (lastError) {
+                let errorMessage = 'দুঃখিত, এই মুহূর্তে পরিকল্পনা তৈরি করা যাচ্ছে না। আবার চেষ্টা করুন।';
+                if (finalStatus === 401 || finalStatus === 403) {
+                    errorMessage = 'অনুমতি ত্রুটি (401/403): জেমিনি এপিআই সংযোগ ব্যর্থ হয়েছে। এই সমস্যা পরিবেশের সাথে সম্পর্কিত হতে পারে।';
+                }
+                
+                if (outputElement.innerHTML.includes('অপেক্ষা করুন') || finalStatus > 0) {
+                     // Update if it's still showing loading or if an API status was received
+                     outputElement.innerHTML = `<p class="text-red-500">${errorMessage}</p>`;
+                }
+            }
+        }
+        // --- End Gemini API Function ---
+
         // Function to show district details in a modal
         function showDistrictDetails(divisionIndex, districtIndex) {
             const division = districtsData[divisionIndex];
             const district = division.districts[districtIndex];
             const modal = document.getElementById('districtModal');
             const modalContent = document.getElementById('modalContent');
+            const districtId = district.en.replace(/\s/g, '-');
 
             // Emergency Contacts HTML Generation
-            const emergencyHtml = district.emergency_contacts.map(e => `
+            const emergencyHtml = district.emergency_contacts.map(e => {
+                const displayContact = e.contact.split('/')[0].trim();
+                return `
                 <div class="flex justify-between items-center py-2 border-b border-gray-200">
                     <div class="flex-1 min-w-0">
                         <p class="font-medium text-sm text-gray-800">${e.type}</p>
@@ -306,11 +412,11 @@
                     </div>
                     <a href="tel:${getDialableNumber(e.contact)}" 
                         class="text-sm font-bold text-red-500 hover:text-red-700 ml-2 active:scale-95 transition-transform"
-                        title="Call ${e.contact.split('/')[0].trim()}">
-                        📞 ${e.contact.split('/')[0].trim()}
+                        title="Call ${displayContact}">
+                        📞 ${displayContact}
                     </a>
                 </div>
-            `).join('');
+            `;}).join('');
 
             // Transport Map Link
             const mapLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(district.transport_info.map_query || district.en)}`;
@@ -331,6 +437,22 @@
                         <p class="text-gray-700 font-medium">${district.highlight_en}</p>
                         <p class="text-gray-500 text-sm italic mt-1">${district.highlight_bn}</p>
                     </div>
+
+                    <!-- Section 1.5: LLM Feature (Gemini Tour Planner) -->
+                    <div class="p-4 bg-purple-50 border-l-4 border-purple-500 rounded-lg shadow-inner">
+                        <h4 class="text-xl font-bold mb-3 text-purple-700 flex items-center">
+                            <span class="mr-2 text-2xl">✨</span> জেমিনি ট্যুর প্ল্যানার
+                        </h4>
+                        <p id="llm-output-${districtId}" class="text-gray-600 text-sm mb-3">
+                            আপনার ভ্রমণের হাইলাইটগুলির উপর ভিত্তি করে একটি দ্রুত ভ্রমণ পরিকল্পনা পেতে পারেন। 
+                        </p>
+                        <button onclick="generateItinerary('${district.en}', '${district.highlight_en.replace(/'/g, "\\'")}')"
+                                id="llm-button-${districtId}"
+                                class="mt-1 inline-flex items-center text-sm font-semibold text-white bg-purple-600 px-4 py-2 rounded-lg hover:bg-purple-700 transition duration-300 active:scale-95">
+                            <span class="mr-1 text-base">✨</span> ভ্রমণ পরিকল্পনা তৈরি করুন
+                        </button>
+                    </div>
+
 
                     <!-- Section 2: Emergency Contacts -->
                     <div class="p-4 bg-red-50 border-l-4 border-red-500 rounded-lg shadow-inner">
