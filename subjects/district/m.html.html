@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>64 Districts of Bangladesh Directory | বাংলাদেশ জেলা ডিরেক্টরি</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for Inter font and mobile-like screen */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #e2e8f0; /* Soft Ash Background */
+            display: flex;
+            justify-content: center;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* Simulating a mobile frame */
+        .app-frame {
+            width: 100%;
+            max-width: 420px; /* Standard smartphone width */
+            min-height: 100vh;
+            background-color: #ffffff;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+        }
+
+        .division-header {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        .district-list {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+        }
+        .district-list.expanded {
+            max-height: 3000px; 
+            padding-top: 0.75rem;
+            padding-bottom: 0.75rem;
+        }
+        /* New Compact District Item Style */
+        .district-item {
+            height: 90px; 
+            cursor: pointer;
+            transition: transform 0.1s, box-shadow 0.2s;
+            border: none; /* Removing redundant border */
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            justify-content: center; /* Center content in the tile */
+        }
+        .district-item:active {
+            transform: scale(0.98);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 50; 
+            display: none; /* Ensure it starts hidden */
+        }
+
+        /* Modal specific styling for better mobile UX */
+        .modal-content-scroll {
+            max-height: 80vh; /* Max height for scrollable content */
+            overflow-y: auto;
+        }
+        .modal-header-sticky {
+            position: sticky;
+            top: 0;
+            background-color: #fff;
+            z-index: 10;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-frame">
+        <div class="p-4">
+            <!-- App-like Header/Dashboard Area -->
+            <header class="mb-6 pt-2 pb-4 bg-emerald-600 text-white rounded-b-2xl shadow-xl">
+                <div class="text-center">
+                    <h1 class="text-2xl font-black">
+                        🇧🇩 ৬৪ জেলা পরিচিতি ড্যাশবোর্ড
+                    </h1>
+                    <p class="mt-1 text-sm font-light opacity-80">বাংলাদেশের জেলাগুলো সম্পর্কে জানুন</p>
+                </div>
+                
+                <!-- Search and Action Bar - Compacted -->
+                <div class="mt-4 px-2 flex gap-2">
+                    <input type="text" id="searchInput" onkeyup="filterDistricts()" placeholder="জেলার নাম দিয়ে খুঁজুন..."
+                        class="flex-grow p-2 text-sm text-gray-800 border-2 border-emerald-400 rounded-lg shadow-inner focus:ring-emerald-300 focus:border-emerald-300 transition duration-300">
+                    
+                    <button id="toggleAllBtn" onclick="toggleAllDivisions()"
+                        class="px-3 py-2 text-xs bg-emerald-500 text-white font-semibold rounded-lg hover:bg-emerald-700 transition duration-300 active:scale-95">
+                        Expand All
+                    </button>
+                </div>
+            </header>
+
+            <!-- Division Container (Mobile Scrollable Look) -->
+            <div id="divisionContainer" class="space-y-4">
+                <!-- Districts will be rendered here by JavaScript -->
+            </div>
+
+            <!-- Footer - Minimal -->
+            <footer class="mt-8 text-center text-gray-500 text-xs">
+                <p>&copy; 2025 BD Districts. | ডেটা পাবলিক সোর্স থেকে নেওয়া হয়েছে।</p>
+            </footer>
+
+        </div>
+    </div>
+
+    <!-- District Details Modal -->
+    <div id="districtModal" class="modal-backdrop items-center justify-center p-4" onclick="closeDistrictDetails()">
+        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full transform transition-all overflow-hidden" onclick="event.stopPropagation()">
+            <!-- Modal content wrapper with max height and scroll -->
+            <div class="modal-content-scroll">
+                <div class="p-6 md:p-8">
+                    <!-- Modal Content goes here -->
+                    <div id="modalContent"></div>
+                </div>
+            </div>
+            
+            <div class="p-4 border-t border-gray-100 flex justify-end">
+                <button onclick="closeDistrictDetails()"
+                        class="px-6 py-2 bg-indigo-500 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-600 transition duration-300 active:scale-95">
+                    বন্ধ করুন
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Data for all 64 Districts, including Bengali names and historical highlights, emergency, and transport info.
+        const districtsData = [
+            { name: "ঢাকা বিভাগ (Dhaka)", bn_name: "ঢাকা বিভাগ", color: "from-emerald-600 to-green-700", districts: [
+                { en: "Dhaka", bn: "ঢাকা", 
+                    highlight_en: "Lalbagh Fort (Mughal), Ahsan Manzil", 
+                    highlight_bn: "লালবাগ কেল্লা, আহসান মঞ্জিল",
+                    emergency_contacts: [
+                        { type: "Police (Kotwali Upazila)", contact: "02-47118949", location: "Old Dhaka, Kotwali Thana" },
+                        { type: "Hospital (DMCH)", contact: "02-9669352", location: "Dhaka Medical College" },
+                        { type: "DC Office", contact: "02-47118320", location: "DC Office, Dhaka" }
+                    ],
+                    transport_info: {
+                        train: "কমলাপুর রেলওয়ে স্টেশন (দেশের প্রধান কেন্দ্র)",
+                        bus: "সায়েদাবাদ, গাবতলী, মহাখালী টার্মিনাল",
+                        map_query: "Lalbagh Fort, Dhaka, Bangladesh",
+                        visit_tip: "স্থানীয় ভ্রমণের জন্য রাইড-শেয়ারিং অ্যাপ ব্যবহার করুন। সকাল ও সন্ধ্যায় তীব্র যানজট এড়িয়ে চলুন।"
+                    }
+                }, 
+                { en: "Faridpur", bn: "ফরিদপুর", highlight_en: "Fatikchhari Math", highlight_bn: "ফটিকছড়ি মঠ" }, 
+                { en: "Gazipur", bn: "গাজীপুর", highlight_en: "Bhawal National Park", highlight_bn: "ভাওয়াল জাতীয় উদ্যান" }, 
+                { en: "Gopalganj", bn: "গোপালগঞ্জ", highlight_en: "Bangabandhu Mausoleum (Tungipara)", highlight_bn: "বঙ্গবন্ধুর সমাধি কমপ্লেক্স (টুঙ্গিপাড়া)" }, 
+                { en: "Kishoreganj", bn: "কিশোরগঞ্জ", highlight_en: "Egarosindhur Fort", highlight_bn: "ইগারোসিন্দুর দুর্গ" }, 
+                { en: "Madaripur", bn: "মাদারীপুর", highlight_en: "Shakuni Lake", highlight_bn: "শকুনি লেক" }, 
+                { en: "Manikganj", bn: "মানিকগঞ্জ", highlight_en: "Baliati Zamindar Bari", highlight_bn: "বালিয়াটি জমিদার বাড়ি" }, 
+                { en: "Munshiganj", bn: "মুন্সিগঞ্জ", highlight_en: "Idrakpur Fort", highlight_bn: "ইদ্রাকপুর কেল্লা" }, 
+                { en: "Narayanganj", bn: "নারায়ণগঞ্জ", highlight_en: "Panam City (Sonargaon)", highlight_bn: "পানাম সিটি (সোনারগাঁও)" }, 
+                { en: "Narsingdi", bn: "নরসিংদী", highlight_en: "Wari-Bateshwar Ruins (Ancient Site)", highlight_bn: "উয়ারী-বটেশ্বর (প্রাচীন স্থান)" }, 
+                { en: "Rajbari", bn: "রাজবাড়ী", highlight_en: "Rajbari Palace", highlight_bn: "রাজবাড়ী প্রাসাদ" }, 
+                { en: "Shariatpur", bn: "শরীয়তপুর", highlight_en: "Mohanpur Hembabu Temple", highlight_bn: "মোহনপুর হেমবাবু মন্দির" }, 
+                { en: "Tangail", bn: "টাঙ্গাইল", highlight_en: "Atia Jame Mosque", highlight_bn: "আতিয়া জামে মসজিদ" }
+            ]},
+            { name: "চট্টগ্রাম বিভাগ (Chattogram)", bn_name: "চট্টগ্রাম বিভাগ", color: "from-blue-600 to-sky-700", districts: [
+                { en: "Chattogram", bn: "চট্টগ্রাম", highlight_en: "Foy's Lake & World War II Cemetery", highlight_bn: "ফয়েজ লেক ও ওয়ার সিমেট্রি" }, 
+                { en: "Bandarban", bn: "বান্দরবান", highlight_en: "Buddha Dhatu Jadi (Golden Temple)", highlight_bn: "বুদ্ধ ধাতু জাদি (গোল্ডেন টেম্পল)" }, 
+                { en: "Brahmanbaria", bn: "ব্রাহ্মণবাড়িয়া", highlight_en: "Kalbhairab Statue", highlight_bn: "কালভৈরব মূর্তি" }, 
+                { en: "Chandpur", bn: "চাঁদপুর", highlight_en: "Mollar Bari", highlight_bn: "মোল্লার বাড়ি" }, 
+                { en: "Cox's Bazar", bn: "কক্সবাজার", highlight_en: "Longest Sea Beach in the World", highlight_bn: "পৃথিবীর দীর্ঘতম সমুদ্র সৈকত" }, 
+                { en: "Cumilla", bn: "কুমিল্লা", highlight_en: "Mainamati Ruins (Buddhist Sites)", highlight_bn: "ময়নামতি প্রত্নতাত্ত্বিক স্থান" }, 
+                { en: "Feni", bn: "ফেনী", highlight_en: "Feni Government College", highlight_bn: "ফেনী সরকারী কলেজ" }, 
+                { en: "Khagrachhari", bn: "খাগড়াছড়ি", highlight_en: "Alutila Cave", highlight_bn: "আলুটিলা গুহা" }, 
+                { en: "Lakshmipur", bn: "লক্ষ্মীপুর", highlight_en: "Dalal Bazar Zamindar Bari", highlight_bn: "দালাল বাজার জমিদার বাড়ি" }, 
+                { en: "Noakhali", bn: "নোয়াখালী", highlight_en: "Nijhum Dwip (Island)", highlight_bn: "নিঝুম দ্বীপ" }, 
+                { en: "Rangamati", bn: "রাঙ্গামাটি", highlight_en: "Kaptai Lake", highlight_bn: "কাপ্তাই হ্রদ" }
+            ]},
+            { name: "খুলনা বিভাগ (Khulna)", bn_name: "খুলনা বিভাগ", color: "from-amber-600 to-yellow-700", districts: [
+                { en: "Khulna", bn: "খুলনা", highlight_en: "Khulna Divisional Museum", highlight_bn: "খুলনা বিভাগীয় জাদুঘর" }, 
+                { en: "Bagerhat", bn: "বাগেরহাট", highlight_en: "Sixty Dome Mosque (UNESCO)", highlight_bn: "ষাট গম্বুজ মসজিদ" }, 
+                { en: "Chuadanga", bn: "চুয়াডাঙ্গা", highlight_en: "Nilkuthi (Indigo Factory)", highlight_bn: "নীলকুঠি (আন্দুলবাড়ীয়া)" }, 
+                { en: "Jashore", bn: "যশোর", highlight_en: "Michael Madhusudan Dutt's birthplace", highlight_bn: "মাইকেল মধুসূদন দত্তের বাড়ি" }, 
+                { en: "Jhenaidah", bn: "ঝিনাইদহ", highlight_en: "Naldanga Rajbari", highlight_bn: "নলডাঙ্গা রাজবাড়ী" }, 
+                { en: "Kushtia", bn: "কুষ্টিয়া", highlight_en: "Kuthibari (Tagore's Residence)", highlight_bn: "কুঠিবাড়ি (রবীন্দ্রনাথের)" }, 
+                { en: "Meherpur", bn: "মেহেরপুর", 
+                    highlight_en: "Mujibnagar Memorial Complex", 
+                    highlight_bn: "মুজিবনগর স্মৃতিসৌধ কমপ্লেক্স",
+                    emergency_contacts: [
+                        { type: "Police (Gangni Upazila)", contact: "07922-56000", location: "Gangni Police Station" },
+                        { type: "Hospital (Sadar)", contact: "07922-62283", location: "Meherpur Sadar Hospital" },
+                        { type: "DC Office", contact: "07922-62222", location: "DC Office, Meherpur" }
+                    ],
+                    transport_info: {
+                        train: "নিকটস্থ স্টেশন: দর্শনা (চুয়াডাঙ্গা) বা পোড়াদহ (কুষ্টিয়া)",
+                        bus: "ঢাকা থেকে জে.আর পরিবহন/এস.বি সুপার ডিলাক্স বাস সার্ভিস",
+                        map_query: "Mujibnagar Memorial Complex, Meherpur",
+                        visit_tip: "মেহেরপুর সদর থেকে মুজিবনগর যেতে স্থানীয় যান (সিএনজি/ইজি বাইক) ব্যবহার করতে পারেন।"
+                    }
+                }, 
+                { en: "Magura", bn: "মাগুরা", highlight_en: "King Sreeram's Fortress", highlight_bn: "রাজা শ্রীরামের কেল্লা" }, 
+                { en: "Narail", bn: "নড়াইল", highlight_en: "S.M. Sultan's Residence", highlight_bn: "এস.এম. সুলতানের বাড়ি" }, 
+                { en: "Satkhira", bn: "সাতক্ষীরা", highlight_en: "Sundarbans (Partially)", highlight_bn: "সুন্দরবন (আংশিক)" }
+            ]},
+            { name: "রাজশাহী বিভাগ (Rajshahi)", bn_name: "রাজশাহী বিভাগ", color: "from-red-600 to-pink-700", districts: [
+                { en: "Rajshahi", bn: "রাজশাহী", highlight_en: "Puthia Palace", highlight_bn: "পুঠিয়া রাজবাড়ী" }, 
+                { en: "Bogura", bn: "বগুড়া", highlight_en: "Mahasthangarh (Ancient Pundranagar)", highlight_bn: "মহাস্থানগড় (প্রাচীন পুন্ড্রনগর)" }, 
+                { en: "Chapai Nawabganj", bn: "চাঁপাইনবাবগঞ্জ", highlight_en: "Chhoto Sona Mosque", highlight_bn: "ছোট সোনা মসজিদ" }, 
+                { en: "Joypurhat", bn: "জয়পুরহাট", highlight_en: "Barashibpur Rajbari", highlight_bn: "বারশিবপুর রাজবাড়ী" }, 
+                { en: "Naogaon", bn: "নওগাঁ", highlight_en: "Somapura Mahavihara (Paharpur, UNESCO)", highlight_bn: "সোমপুর মহাবিহার (পাহাড়পুর)" }, 
+                { en: "Natore", bn: "নাটোর", highlight_en: "Natore Rajbari (Queen Bhabani)", highlight_bn: "নাটোর রাজবাড়ী" }, 
+                { en: "Pabna", bn: "পাবনা", highlight_en: "Hardinge Bridge", highlight_bn: "হার্ডিঞ্জ ব্রিজ" }, 
+                { en: "Sirajganj", bn: "সিরাজগঞ্জ", highlight_en: "Ellenga Palace", highlight_bn: "এলেঙ্গা রাজবাড়ী" }
+            ]},
+            { name: "রংপুর বিভাগ (Rangpur)", bn_name: "রংপুর বিভাগ", color: "from-cyan-600 to-teal-600", districts: [
+                { en: "Rangpur", bn: "রংপুর", highlight_en: "Tajhat Palace Museum", highlight_bn: "তাজহাট রাজবাড়ী" }, 
+                { en: "Dinajpur", bn: "দিনাজপুর", highlight_en: "Kantajew Temple (Terracotta)", highlight_bn: "কান্তজিউ মন্দির" }, 
+                { en: "Gaibandha", bn: "গাইবান্ধা", highlight_en: "Baliagura Zamindar Bari", highlight_bn: "বালিয়াগুড়া জমিদার বাড়ী" }, 
+                { en: "Kurigram", bn: "কুড়িগ্রাম", highlight_en: "Chandra's Fort", highlight_bn: "চাঁদের কেল্লা" }, 
+                { en: "Lalmonirhat", bn: "লালমনিরহাট", highlight_en: "Burimari Land Port", highlight_bn: "বুড়িমারী স্থল বন্দর" }, 
+                { en: "Nilphamari", bn: "নীলফামারী", highlight_en: "Nil Sagar (Lake)", highlight_bn: "নীল সাগর" }, 
+                { en: "Panchagarh", bn: "পঞ্চগড়", highlight_en: "Maharaja Dighi", highlight_bn: "মহারাজা দিঘী" }, 
+                { en: "Thakurgaon", bn: "ঠাকুরগাঁও", highlight_en: "Jamalpur Zamindar Bari", highlight_bn: "জামালপুর জমিদার বাড়ী" }
+            ]},
+            { name: "সিলেট বিভাগ (Sylhet)", bn_name: "সিলেট বিভাগ", color: "from-lime-600 to-emerald-600", districts: [
+                { en: "Sylhet", bn: "সিলেট", highlight_en: "Hazrat Shah Jalal Shrine, Jaflong", highlight_bn: "হযরত শাহজালাল (রাঃ) এর মাজার, জাফলং" }, 
+                { en: "Habiganj", bn: "হবিগঞ্জ", highlight_en: "Shankarpasha Shahi Mosque", highlight_bn: "শঙ্করপাশা শাহী মসজিদ" }, 
+                { en: "Moulvibazar", bn: "মৌলভীবাজার", highlight_en: "Tea Gardens (Srimangal)", highlight_bn: "চা বাগান (শ্রীমঙ্গল)" }, 
+                { en: "Sunamganj", bn: "সুনামগঞ্জ", highlight_en: "Hason Raja Museum", highlight_bn: "হাসন রাজা মিউজিয়াম" }
+            ]},
+            { name: "বরিশাল বিভাগ (Barishal)", bn_name: "বরিশাল বিভাগ", color: "from-indigo-600 to-purple-700", districts: [
+                { en: "Barishal", bn: "বরিশাল", highlight_en: "Durga Sagar Dighi", highlight_bn: "দুর্গাসাগর দিঘি" }, 
+                { en: "Bhola", bn: "ভোলা", highlight_en: "Char Kukri Mukri", highlight_bn: "চর কুকরি মুকরি" }, 
+                { en: "Jhalokati", bn: "ঝালকাঠি", highlight_en: "Sugandha River", highlight_bn: "সুগন্ধা নদী" }, 
+                { en: "Patuakhali", bn: "পটুয়াখালী", highlight_en: "Kuakata Sea Beach", highlight_bn: "কুয়াকাটা সমুদ্র সৈকত" }, 
+                { en: "Pirojpur", bn: "পিরোজপুর", highlight_en: "Baleshwar River", highlight_bn: "বলেশ্বর নদী" }, 
+                { en: "Barguna", bn: "বরগুনা", highlight_en: "Bibichini Mosque", highlight_bn: "বিবিচিনি মসজিদ" }
+            ]},
+            { name: "ময়মনসিংহ বিভাগ (Mymensingh)", bn_name: "ময়মনসিংহ বিভাগ", color: "from-pink-600 to-rose-700", districts: [
+                { en: "Mymensingh", bn: "ময়মনসিংহ", highlight_en: "Mymensingh Museum, Shashi Lodge", highlight_bn: "ময়মনসিংহ জাদুঘর, শশী লজ" }, 
+                { en: "Jamalpur", bn: "জামালপুর", highlight_en: "Dayamoyee Temple", highlight_bn: "দয়াময়ী মন্দির" }, 
+                { en: "Netrokona", bn: "নেত্রকোণা", highlight_en: "Birishiri (Ethnic Culture)", highlight_bn: "বিরিশিরি (আদিবাসী সংস্কৃতি)" }, 
+                { en: "Sherpur", bn: "শেরপুর", highlight_en: "Gajni Abakash Kendra (Eco-Park)", highlight_bn: "গজনী অবকাশ কেন্দ্র" }
+            ]}
+        ];
+
+        // Fill remaining districts with structured default emergency/transport info
+        districtsData.forEach(division => {
+            division.districts.forEach(district => {
+                if (!district.emergency_contacts || district.emergency_contacts.length < 3) {
+                    // Using a structured default set
+                    district.emergency_contacts = [
+                        { type: "Police (National Hotline)", contact: "999", location: "জাতীয় জরুরি সেবা" },
+                        { type: "Hospital (Sadar)", contact: "0XXXXXXXXXX", location: `${district.bn} সদর হাসপাতাল` },
+                        { type: "DC Office", contact: "0XXXXXXXXXX", location: `${district.bn} জেলা প্রশাসক কার্যালয়` }
+                    ];
+                }
+                
+                if (!district.transport_info) {
+                    district.transport_info = {
+                        train: "প্রধান রেল স্টেশন: তথ্য পাওয়া যায়নি",
+                        bus: `${district.en} কেন্দ্রীয় বাস টার্মিনাল`,
+                        map_query: `${district.en} District Sadar Hospital, Bangladesh`,
+                        visit_tip: "ভ্রমণের আগে স্থানীয় পরিবহন (সিএনজি/রিকশা/বাস) সম্পর্কে জেনে নিন।"
+                    };
+                }
+            });
+        });
+
+        let allExpanded = false;
+        const divisionContainer = document.getElementById('divisionContainer');
+        const toggleAllBtn = document.getElementById('toggleAllBtn');
+
+        // Function to safely extract a phone number for dialling (removing all non-digit chars except plus)
+        function getDialableNumber(contact) {
+            if (!contact) return '';
+            const numberPart = contact.split('/')[0].trim();
+            // Allows only digits and + for international compatibility
+            return numberPart.replace(/[^0-9+]/g, ''); 
+        }
+
+        // Function to show district details in a modal
+        function showDistrictDetails(divisionIndex, districtIndex) {
+            const division = districtsData[divisionIndex];
+            const district = division.districts[districtIndex];
+            const modal = document.getElementById('districtModal');
+            const modalContent = document.getElementById('modalContent');
+
+            // Emergency Contacts HTML Generation
+            const emergencyHtml = district.emergency_contacts.map(e => `
+                <div class="flex justify-between items-center py-2 border-b border-gray-200">
+                    <div class="flex-1 min-w-0">
+                        <p class="font-medium text-sm text-gray-800">${e.type}</p>
+                        <p class="text-xs text-gray-500 truncate">${e.location}</p>
+                    </div>
+                    <a href="tel:${getDialableNumber(e.contact)}" 
+                        class="text-sm font-bold text-red-500 hover:text-red-700 ml-2 active:scale-95 transition-transform"
+                        title="Call ${e.contact.split('/')[0].trim()}">
+                        📞 ${e.contact.split('/')[0].trim()}
+                    </a>
+                </div>
+            `).join('');
+
+            // Transport Map Link
+            const mapLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(district.transport_info.map_query || district.en)}`;
+
+            // Populate modal content
+            modalContent.innerHTML = `
+                <div class="modal-header-sticky">
+                    <h3 class="text-3xl font-black text-gray-800">${district.en} <span class="text-2xl font-light">(${district.bn})</span></h3>
+                    <p class="text-lg font-medium text-emerald-600">${division.name}</p>
+                </div>
+                
+                <div class="space-y-6 mt-4">
+                    <!-- Section 1: Heritage Highlights -->
+                    <div class="p-4 bg-gray-100 border-l-4 border-indigo-500 rounded-lg shadow-inner">
+                        <h4 class="text-xl font-bold mb-2 text-indigo-700 flex items-center">
+                            <span class="mr-2 text-2xl">🏛️</span>ঐতিহাসিক স্থান / Heritage
+                        </h4>
+                        <p class="text-gray-700 font-medium">${district.highlight_en}</p>
+                        <p class="text-gray-500 text-sm italic mt-1">${district.highlight_bn}</p>
+                    </div>
+
+                    <!-- Section 2: Emergency Contacts -->
+                    <div class="p-4 bg-red-50 border-l-4 border-red-500 rounded-lg shadow-inner">
+                        <h4 class="text-xl font-bold mb-3 text-red-700 flex items-center">
+                            <span class="mr-2 text-2xl">🚨</span>জরুরী পরিষেবা / Emergency Contacts
+                        </h4>
+                        <div class="divide-y divide-gray-200">
+                            ${emergencyHtml}
+                        </div>
+                        <p class="mt-3 text-xs text-gray-500">*সাধারণ জরুরি অবস্থার জন্য ৯৯৯-এ কল করুন। স্থানীয় নম্বরগুলো যাচাই করে নিন।</p>
+                    </div>
+
+                    <!-- Section 3: Visit & Transport Guide -->
+                    <div class="p-4 bg-blue-50 border-l-4 border-blue-500 rounded-lg shadow-inner">
+                        <h4 class="text-xl font-bold mb-2 text-blue-700 flex items-center">
+                            <span class="mr-2 text-2xl">🚌</span>ভ্রমণ গাইড ও পরিবহন
+                        </h4>
+                        <p class="text-sm"><strong class="text-gray-700">ট্রেন:</strong> ${district.transport_info.train}</p>
+                        <p class="text-sm mt-1"><strong class="text-gray-700">বাস:</strong> ${district.transport_info.bus}</p>
+                        <p class="text-xs italic mt-2 text-gray-500"><strong class="text-gray-700">টিপস:</strong> ${district.transport_info.visit_tip}</p>
+                        
+                        <a href="${mapLink}" target="_blank" 
+                           class="mt-3 inline-flex items-center text-sm font-semibold text-white bg-green-600 px-4 py-2 rounded-lg hover:bg-green-700 transition duration-300">
+                           <span class="mr-1">🗺️</span> ম্যাপে খুঁজুন (Google Maps)
+                        </a>
+                    </div>
+                </div>
+            `;
+
+            // Show the modal
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        // Function to close the modal
+        function closeDistrictDetails() {
+            const modal = document.getElementById('districtModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // Function to render the list of divisions and districts
+        function renderDivisions(data) {
+            divisionContainer.innerHTML = '';
+            data.forEach((division, index) => {
+                const divisionId = `division-${index}`;
+                const listId = `list-${index}`;
+                
+                // Construct the HTML structure for the division card
+                const divisionCard = document.createElement('div');
+                divisionCard.className = 'bg-white rounded-xl shadow-lg overflow-hidden';
+                divisionCard.innerHTML = `
+                    <div id="${divisionId}" onclick="toggleDivision('${listId}', '${divisionId}')" 
+                         class="division-header p-4 bg-gradient-to-r ${division.color} text-white hover:opacity-90 transition duration-300 flex justify-between items-center rounded-xl shadow-md cursor-pointer">
+                        <h2 class="text-lg md:text-xl font-bold">${division.name}</h2>
+                        <span id="icon-${divisionId}" class="text-xl transition-transform transform duration-300">▼</span>
+                    </div>
+                    
+                    <div id="${listId}" class="district-list bg-gray-50">
+                        <div class="grid grid-cols-3 sm:grid-cols-4 gap-2 p-2 md:p-3">
+                            ${division.districts.map((d, districtIndex) => `
+                                <div onclick="showDistrictDetails(${index}, ${districtIndex})"
+                                    class="p-2 bg-white rounded-lg shadow-md hover:shadow-lg hover:bg-emerald-50 transition duration-300 text-center district-item flex flex-col items-center justify-center">
+                                    <span class="text-2xl mb-1">📍</span>
+                                    <p class="font-bold text-gray-800 text-xs truncate">${d.en}</p>
+                                    <p class="text-[10px] text-gray-500 truncate">${d.bn}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                divisionContainer.appendChild(divisionCard);
+
+                // Initialize state (collapsed)
+                const listElement = document.getElementById(listId);
+                const iconElement = document.getElementById(`icon-${divisionId}`);
+                if (listElement && iconElement) {
+                    listElement.classList.remove('expanded');
+                    iconElement.style.transform = 'rotate(0deg)';
+                }
+            });
+        }
+
+        // Toggle visibility of a single division list
+        function toggleDivision(listId, headerId) {
+            const list = document.getElementById(listId);
+            const icon = document.getElementById(`icon-${headerId}`);
+            if (list.classList.contains('expanded')) {
+                list.classList.remove('expanded');
+                icon.style.transform = 'rotate(0deg)';
+            } else {
+                list.classList.add('expanded');
+                icon.style.transform = 'rotate(180deg)';
+            }
+        }
+
+        // Toggle all divisions open or closed
+        function toggleAllDivisions() {
+            allExpanded = !allExpanded;
+            const lists = document.querySelectorAll('.district-list');
+            const icons = document.querySelectorAll('[id^="icon-division-"]');
+            
+            lists.forEach(list => {
+                list.classList.toggle('expanded', allExpanded);
+            });
+            icons.forEach(icon => {
+                icon.style.transform = allExpanded ? 'rotate(180deg)' : 'rotate(0deg)';
+            });
+
+            toggleAllBtn.textContent = allExpanded ? 'Collapse All' : 'Expand All';
+        }
+
+        // Filter function - updated to search highlights as well
+        function filterDistricts() {
+            const input = document.getElementById('searchInput');
+            const filter = input.value.toLowerCase().trim();
+            const divisionCards = divisionContainer.children;
+            let foundMatch = false;
+
+            for (let i = 0; i < divisionCards.length; i++) {
+                const divisionCard = divisionCards[i];
+                const districtItems = divisionCard.querySelectorAll('.district-item');
+                const list = divisionCard.querySelector('.district-list');
+                const header = divisionCard.querySelector('.division-header');
+                const headerId = header.id;
+                const icon = document.getElementById(`icon-${headerId}`);
+                let divisionHasMatch = false;
+                
+                districtItems.forEach(item => {
+                    const textContent = item.textContent.toLowerCase();
+                    if (textContent.includes(filter)) {
+                        item.style.display = 'flex'; 
+                        divisionHasMatch = true;
+                        foundMatch = true;
+                    } else {
+                        item.style.display = 'none'; 
+                    }
+                });
+
+                if (filter === "") {
+                    divisionCard.style.display = 'block';
+                    list.classList.remove('expanded');
+                    icon.style.transform = 'rotate(0deg)';
+                    toggleAllBtn.textContent = 'Expand All';
+                    allExpanded = false;
+                } else if (divisionHasMatch) {
+                    divisionCard.style.display = 'block';
+                    list.classList.add('expanded');
+                    icon.style.transform = 'rotate(180deg)';
+                } else {
+                    divisionCard.style.display = 'none';
+                }
+            }
+        }
+
+        // Initial rendering of the divisions
+        window.onload = () => {
+            renderDivisions(districtsData);
+            document.getElementById('districtModal').addEventListener('click', closeDistrictDetails);
+        };
+    </script>
+</body>
+</html>
